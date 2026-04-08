@@ -1,0 +1,35 @@
+# Entorno
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+
+# Bases de datos y logs
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.db
+*.log
+
+# Claves
+id_ed25519
+id_ed25519.pub
+*.pem
+*.key
+
+# Datos persistentes
+data/
+storage/
+ollama_data/
+models/
+
+# SO / editor
+.DS_Store
+.vscode/
+.idea/

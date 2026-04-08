@@ -1,0 +1,40 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./data/ollama_data:/root/.ollama
+
+  pdf:
+    build:
+      context: ./service/pdf-service
+      dockerfile: Dockerfile
+    container_name: pdf-service
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+
+  n8n:
+    build:
+      context: ./service/n8n
+      dockerfile: Dockerfile
+    container_name: n8n
+    restart: unless-stopped
+    ports:
+      - "5678:5678"
+    volumes:
+      - ./data/n8n:/home/node/.n8n
+    environment:
+      N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "true"
+      N8N_RUNNERS_ENABLED: "true"
+      N8N_HOST: "0.0.0.0"
+      N8N_PORT: "5678"
+      N8N_PROTOCOL: "https"
+      WEBHOOK_URL: "https://sticks-bbs-might-postcards.trycloudflare.com/"
+      OLLAMA_HOST: "http://ollama:11434"
+    depends_on:
+      - ollama
+      - pdf
